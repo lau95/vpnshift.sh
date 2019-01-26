@@ -1,10 +1,50 @@
 vpnshift
 ========
 
-*Don't depend on this for anything serious (yet). If you do use this,
+
+Fork proposal to add a client/server functionnality
+---------------------------------------------------
+
+*First please read carefull the whole document and especially hereunder :
+
+Don't depend on this for anything serious (yet). If you do use this,
 make sure to verify that the VPN connection is active, since the network
 namespace abstraction is leaky with real-world applications like Google
 Chrome.*
+
+This fork of vpnshift aims to add a client/server fonctionnality of vpnshift
+genuine tool.
+
+To make it work :
+
+	1/ copy the files below to an appropriate directory on your system
+	   e.g. /opt/vpnshift
+		vpnshift-client-open.sh
+		vpnshift-launcher.sh
+		vpnshift-server-open.sh
+		vpnshift.sh
+
+	2/ create a systemd service where 
+		ExecStart=/opt/vpnshift/vpnshift-launcher.sh -a <your openvpn config file whole path>
+		ExecStop=/opt/vpnshift/vpnshift-launcher.sh -o $MAINPID
+
+
+	3/ create the vpn-client-allowed.conf
+		under /usr/local/etc/vpnshift/
+		base on the delivered template
+		fill it dynamically to authorize client launchs (of any kinds,web browsers but not only)
+		be carefull to keep it read restriced to root
+
+	4/ modify or create clones of your applications to run under VPN
+		e.g. desktop files under /usr/share/applications/ for gnome
+		in the "Exec" lines, add /opt/vpnshift/vpnshift-client-open.sh as a launcher
+			with the rest of the command in arguments
+
+To understand vpnshift by itself please read the rest of this document
+
+Guenuine vpnshift README :
+--------------------------
+
 
 vpnshift lets you run commands in an isolated network namespace with
 openvpn.
